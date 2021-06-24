@@ -23,7 +23,7 @@ export default function WallPage() {
     <Container>
       <Header />
       <PostList>
-        {posts ? (posts.map(({ id, author, title, body, created_at: createdAt }) => (
+        {posts && posts.length ? (posts.map(({ id, author, title, body, created_at: createdAt }) => (
           <PostCard
             key={id}
             id={id}
