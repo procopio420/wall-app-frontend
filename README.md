@@ -14,7 +14,6 @@ yarn # or npm i
 
 ## Usage
 
-
 ```bash
 yarn start
 ```

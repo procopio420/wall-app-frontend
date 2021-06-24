@@ -18,7 +18,7 @@ export default function WallPage() {
   const { user } = useAuth();
   const { posts } = usePosts();
   const { toggleModal } = useModals();
-  console.log(user)
+
   return (
     <Container>
       <Header />
