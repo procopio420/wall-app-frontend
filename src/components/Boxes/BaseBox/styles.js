@@ -19,10 +19,7 @@ export const Container = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  height: ${({height}) => height}px;
-  width: ${({width}) => width}px;
-  margin-top: -${({height}) => height/2}px;
-  margin-left: -${({width}) => width/2}px;
+  transform: translate(-50%, -50%);
 
   background-color: #fff;
   display: flex;

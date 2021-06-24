@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Field, Row } from './styles';
+import { Field, Row, Error } from './styles';
 
 import BaseBox from '../BaseBox';
 
@@ -14,6 +14,7 @@ export default function RegisterBox() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [errors, setErrors] = useState({});
 
   const { register } = useAuth();
   const { registerIsOpen, toggleModal } = useModals();
@@ -23,12 +24,18 @@ export default function RegisterBox() {
       title="Register"
       toggle={() => toggleModal('register')}
       buttonAction={() =>
-        register(username, password, password2, email, firstName, lastName)
+        register(
+          username,
+          password,
+          password2,
+          email,
+          firstName,
+          lastName,
+          (errors) => setErrors(errors),
+        )
       }
       buttonText="Register"
       isOpen={registerIsOpen}
-      height={400}
-      width={450}
       footer={{
         action: () => {
           toggleModal('login');
@@ -38,6 +45,8 @@ export default function RegisterBox() {
         text: 'Already have an account? ',
       }}
     >
+      <div>{!!errors.firstName && <Error>{errors.firstName}</Error>}</div>
+      <div>{!!errors.lastName && <Error>{errors.lastName}</Error>}</div>
       <Row>
         <Field
           value={firstName}
@@ -52,6 +61,8 @@ export default function RegisterBox() {
           placeholder="Your last name"
         />
       </Row>
+      <div>{!!errors.username && <Error>{errors.username}</Error>}</div>
+      <div>{!!errors.email && <Error>{errors.email}</Error>}</div>
       <Row>
         <Field
           value={username}
@@ -66,6 +77,8 @@ export default function RegisterBox() {
           placeholder="Your email"
         />
       </Row>
+      <div>{!!errors.password && <Error>{errors.password}</Error>}</div>
+      <div>{!!errors.password2 && <Error>{errors.password2}</Error>}</div>
       <Row>
         <Field
           value={password}

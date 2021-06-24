@@ -4,10 +4,7 @@ export const Row = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  & + & {
-    margin-top: 10px
-  }
+  margin-top: 10px
 `;
 
 export const Field = styled.input`
@@ -17,10 +14,7 @@ export const Field = styled.input`
   min-width: 200px;
   background-color: #444;
   color: #fff;
-
-  & + & {
-    margin-left: 5px
-  }
+  margin-left: 5px;
 
   &:focus {
     box-shadow: 0 0 15px #f50;
@@ -30,4 +24,11 @@ export const Field = styled.input`
   &::placeholder {
     color: #fff;
   }
+`;
+
+export const Error = styled.p`
+  margin: 10px 0 0;
+  text-align: left;
+  color: #f50;
+  font-family: sans-serif;
 `;

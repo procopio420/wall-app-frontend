@@ -23,3 +23,4 @@ yarn start
 - [ ] Tests
 - [ ] Loading spinners
 - [ ] User inputs validations/feedbacks
+- [ ] Mobile responsive (header and boxes)

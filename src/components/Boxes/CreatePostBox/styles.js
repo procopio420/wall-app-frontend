@@ -38,3 +38,10 @@ export const BigField = styled.textarea`
     color: #fff;
   }
 `;
+
+export const Error = styled.p`
+  margin: 10px 0 0;
+  text-align: left;
+  color: #f50;
+  font-family: sans-serif;
+`;

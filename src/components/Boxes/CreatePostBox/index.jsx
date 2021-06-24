@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { BigField, Field } from './styles';
+import { BigField, Field, Error } from './styles';
 
 import BaseBox from '../BaseBox';
 
@@ -10,6 +10,7 @@ import useModals from '../../../hooks/useModals';
 export default function CreatePostBox() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [errors, setErrors] = useState({});
 
   const { createPost } = usePosts();
   const { toggleModal, createPostIsOpen } = useModals();
@@ -18,12 +19,12 @@ export default function CreatePostBox() {
     <BaseBox
       title="Create a new post!"
       toggle={() => toggleModal('createPost')}
-      buttonAction={() => createPost(title, body)}
+      buttonAction={() => createPost(title, body, (error) => setErrors(error))}
       buttonText="Post"
       isOpen={createPostIsOpen}
-      height={400}
-      width={500}
     >
+      <div>{!!errors.apiError && <Error>{errors.apiError}</Error>}</div>
+      <div>{!!errors.title && <Error>{errors.title}</Error>}</div>
       <Field
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -31,6 +32,7 @@ export default function CreatePostBox() {
         placeholder="Post's title"
       />
 
+      {!!errors.body && <Error>{errors.body}</Error>}
       <BigField
         value={body}
         onChange={(e) => setBody(e.target.value)}

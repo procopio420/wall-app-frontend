@@ -8,13 +8,23 @@ export default function usePosts() {
   const { toggleModal } = useModals();
 
   const createPost = useCallback(
-    async (title, body) => {
-      const response = await api.post('/wall/', { title, body });
+    async (title, body, onError) => {
+      if (title.length && body.length) {
+        const response = await api.post('/wall/', { title, body });
 
-      if (response && response.status === 201) {
-        const newPost = response && response.data;
-        setPosts([newPost, ...posts]);
-        toggleModal('createPost');
+        if (response && response.status === 201) {
+          const newPost = response && response.data;
+          setPosts([newPost, ...posts]);
+          toggleModal('createPost');
+          onError({});
+        } else {
+          onError({ apiError: 'Ops! Something bad happened' });
+        }
+      } else {
+        onError({
+          title: !title.length && 'A title is required!',
+          body: !body.length && 'A message body is required!',
+        });
       }
     },
     [posts, setPosts, toggleModal],

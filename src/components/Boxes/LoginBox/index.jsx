@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Field } from './styles';
+import { Field, Error } from './styles';
 
 import BaseBox from '../BaseBox';
 
@@ -10,6 +10,7 @@ import useModals from '../../../hooks/useModals';
 export default function LoginBox() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
   const { login } = useAuth();
   const { loginIsOpen, toggleModal } = useModals();
@@ -18,11 +19,11 @@ export default function LoginBox() {
     <BaseBox
       title="Login"
       toggle={() => toggleModal('login')}
-      buttonAction={() => login(username, password)}
+      buttonAction={() =>
+        login(username, password, (errors) => setErrors(errors))
+      }
       buttonText="Login"
       isOpen={loginIsOpen}
-      height={340}
-      width={250}
       footer={{
         action: () => {
           toggleModal('login');
@@ -32,12 +33,15 @@ export default function LoginBox() {
         text: 'Or ',
       }}
     >
+      <div>{!!errors.credentials && <Error>{errors.credentials}</Error>}</div>
+      <div>{!!errors.username && <Error>{errors.username}</Error>}</div>
       <Field
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         type="text"
         placeholder="Your username"
       />
+      <div>{!!errors.password && <Error>{errors.password}</Error>}</div>
       <Field
         value={password}
         onChange={(e) => setPassword(e.target.value)}
