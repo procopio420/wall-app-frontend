@@ -2,17 +2,17 @@ import React from 'react';
 
 import { Container, PostList, CreatePostButton } from './styles';
 
-import Header from './components/Header';
-import PostCard from './components/PostCard';
-import SorryMessage from './components/SorryMessage';
+import Header from './Header';
+import PostCard from './PostCard';
+import SorryMessage from './SorryMessage';
 
-import CreatePostBox from './components/Boxes/CreatePostBox';
-import LoginBox from './components/Boxes/LoginBox';
-import RegisterBox from './components/Boxes/RegisterBox';
+import CreatePostBox from './Boxes/CreatePostBox';
+import LoginBox from './Boxes/LoginBox';
+import RegisterBox from './Boxes/RegisterBox';
 
-import useAuth from './hooks/useAuth';
-import usePosts from './hooks/usePosts';
-import useModals from './hooks/useModals';
+import useAuth from '../hooks/useAuth';
+import usePosts from '../hooks/usePosts';
+import useModals from '../hooks/useModals';
 
 export default function WallPage() {
   const { user } = useAuth();
