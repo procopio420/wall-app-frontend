@@ -1,9 +1,11 @@
 import { useCallback, useContext } from 'react';
 import PostsContext from '../contexts/Posts';
 import api from '../services/api';
+import useModals from './useModals';
 
 export default function usePosts() {
-  const { posts, setPosts, setCreatePostIsOpen } = useContext(PostsContext);
+  const { posts, setPosts } = useContext(PostsContext);
+  const { toggleModal } = useModals();
 
   const createPost = useCallback(
     async (title, body) => {
@@ -12,10 +14,10 @@ export default function usePosts() {
       if (response && response.status === 201) {
         const newPost = response && response.data;
         setPosts([newPost, ...posts]);
-        setCreatePostIsOpen(false);
+        toggleModal('createPost');
       }
     },
-    [posts, setPosts, setCreatePostIsOpen],
+    [posts, setPosts, toggleModal],
   );
 
   const removePost = useCallback(

@@ -5,12 +5,11 @@ const PostsContext = React.createContext({});
 
 export const PostsProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
-  const [createPostIsOpen, setCreatePostIsOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
       const response = await api.get('/wall/');
-      if (response && response.status === 200 && setPosts) {
+      if (response && response.status === 200) {
         setPosts(response.data);
       }
     })();
@@ -19,8 +18,6 @@ export const PostsProvider = ({ children }) => {
   const contextValue = {
     posts,
     setPosts,
-    createPostIsOpen,
-    setCreatePostIsOpen,
   };
 
   return (

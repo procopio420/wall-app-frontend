@@ -2,10 +2,13 @@ import { useCallback, useContext, useEffect } from 'react';
 import AuthContext from '../contexts/Auth';
 import api from '../services/api';
 import jwdDecode from 'jwt-decode';
+import useModals from './useModals';
 
 export default function useAuth() {
-  const { user, setUser, setLoginOpen, setRegisterOpen } =
+  const { user, setUser } =
     useContext(AuthContext);
+
+  const { toggleModal } = useModals();
 
   useEffect(() => {
     if (user) {
@@ -43,10 +46,10 @@ export default function useAuth() {
         localStorage.setItem('refreshToken', refresh);
 
         setUser(user);
-        setLoginOpen(false);
+        toggleModal('login');
       }
     },
-    [setUser, setLoginOpen],
+    [setUser, toggleModal],
   );
 
   const logout = useCallback(() => {
@@ -68,11 +71,11 @@ export default function useAuth() {
       });
 
       if (response && response.status === 201) {
-        setRegisterOpen(false);
-        setLoginOpen(true);
+        toggleModal('register');
+        toggleModal('login');
       }
     },
-    [setRegisterOpen, setLoginOpen],
+    [toggleModal],
   );
 
   return {

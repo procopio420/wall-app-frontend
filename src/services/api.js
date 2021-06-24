@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
- baseURL: process.env.REACT_APP_NODE_ENV === 'production' ? 'https://wall-app-back.herokuapp.com/' : 'http://localhost:8000',
+ baseURL: process.env.REACT_APP_NODE_ENV === 'production' ? 'https://wall-app-back.herokuapp.com/' : 'https://wall-app-back.herokuapp.com/',
 });
 
 api.interceptors.request.use((config) => {
