@@ -124,7 +124,7 @@ export default function useAuth() {
         });
       }
     },
-    [toggleModal],
+    [toggleModal, toggleLoading],
   );
 
   return {
