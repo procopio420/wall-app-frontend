@@ -1,6 +1,6 @@
 # Wall App - Frontend
 
-The project is hosted using Heroku: https://wall-app-assignment.herokuapp.com/
+The project is hosted using Heroku: https://wall-app-assignment.herokuapp.com/  
 Or you can follow the instructions to run it locally
 ## Installation
 
