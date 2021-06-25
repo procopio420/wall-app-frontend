@@ -21,7 +21,7 @@ export default function CreatePostBox() {
   return (
     <BaseBox
       title="Create a new post!"
-      toggle={() => toggleModal('createPost')}
+      toggle={() => toggleModal('createPost', false)}
       buttonAction={() => createPost(title, body, (error) => setErrors(error))}
       buttonText="Post"
       isOpen={createPostIsOpen}

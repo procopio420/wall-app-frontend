@@ -19,11 +19,7 @@ export const LoadingProvider = ({ children }) => {
     setCreatePostIsLoading,
   };
 
-  return (
-    <LoadingContext.Provider value={contextValue}>
-      {children}
-    </LoadingContext.Provider>
-  );
+  return <LoadingContext.Provider value={contextValue}>{children}</LoadingContext.Provider>;
 };
 
 export default LoadingContext;

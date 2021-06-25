@@ -1,6 +1,9 @@
 import { useCallback, useContext } from 'react';
-import PostsContext from '../contexts/Posts';
+
 import api from '../services/api';
+
+import PostsContext from '../contexts/Posts';
+
 import useModals from './useModals';
 import useLoading from './useLoading';
 
@@ -11,25 +14,26 @@ export default function usePosts() {
 
   const createPost = useCallback(
     async (title, body, onError) => {
-      if (title.length && body.length) {
-        toggleLoading('createPost', true);
-        const response = await api.post('/wall/', { title, body });
-        toggleLoading('createPost', false);
-
-        if (response && response.status === 201) {
-          const newPost = response && response.data;
-          setPosts([newPost, ...posts]);
-          toggleModal('createPost');
-          onError({});
-        } else {
-          onError({ apiError: 'Ops! Something bad happened' });
-        }
-      } else {
-        onError({
+      if (!title.length || !body.length) {
+        return onError({
           title: !title.length && 'A title is required!',
           body: !body.length && 'A message body is required!',
         });
       }
+
+      toggleLoading('createPost', true);
+
+      const response = await api.post('/wall/', { title, body });
+
+      toggleLoading('createPost', false);
+
+      if (!response || !response.status === 201) {
+        return onError({ apiError: 'Ops! Something bad happened' });
+      }
+
+      setPosts([response.data, ...posts]);
+      toggleModal('createPost', false);
+      onError({});
     },
     [posts, setPosts, toggleModal, toggleLoading],
   );

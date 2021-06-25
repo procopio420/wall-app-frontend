@@ -13,6 +13,7 @@ export default function useLoading() {
     createPostIsLoading,
     setCreatePostIsLoading,
   } = useContext(LoadingContext);
+
   const toggleLoading = useCallback(
     (modal, isOn) => {
       const choices = {
@@ -23,12 +24,7 @@ export default function useLoading() {
       };
       return choices[modal]();
     },
-    [
-      setWallLoading,
-      setLoginIsLoading,
-      setRegisterIsLoading,
-      setCreatePostIsLoading,
-    ],
+    [setWallLoading, setLoginIsLoading, setRegisterIsLoading, setCreatePostIsLoading],
   );
 
   return {

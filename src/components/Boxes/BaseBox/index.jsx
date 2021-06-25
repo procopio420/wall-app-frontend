@@ -1,15 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 
-import {
-  Button,
-  Container,
-  CloseButton,
-  Image,
-  Title,
-  Text,
-  Link,
-} from './styles';
+import { Button, Container, CloseButton, Image, Title, Text, Link } from './styles';
 
 import logo from '../../../assets/logo.png';
 import XIcon from '../../../assets/x.svg';
@@ -36,11 +28,7 @@ export default function BaseBox({
   footer,
 }) {
   return (
-    <ReactModal
-      appElement={document.getElementById('root')}
-      style={customStyles}
-      isOpen={isOpen}
-    >
+    <ReactModal appElement={document.getElementById('root')} style={customStyles} isOpen={isOpen}>
       <Container height={height} width={width}>
         <Image src={logo} alt="Wall App Logo" />
         <Title>{title}</Title>

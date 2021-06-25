@@ -13,6 +13,7 @@ import RegisterIcon from '../../assets/register.svg';
 export default function Header() {
   const { user, logout } = useAuth();
   const { toggleModal } = useModals();
+
   return (
     <Container>
       <Logo>
@@ -32,11 +33,11 @@ export default function Header() {
           </>
         ) : (
           <>
-            <Button onClick={() => toggleModal('login')}>
+            <Button onClick={() => toggleModal('login', true)}>
               <img src={LoginIcon} alt="Login Icon" />
               <p>Login</p>
             </Button>
-            <Button onClick={() => toggleModal('register')}>
+            <Button onClick={() => toggleModal('register', true)}>
               <img src={RegisterIcon} alt="Register Icon" />
               <p>Register</p>
             </Button>

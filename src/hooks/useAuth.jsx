@@ -1,7 +1,10 @@
 import { useCallback, useContext, useEffect } from 'react';
-import AuthContext from '../contexts/Auth';
-import api from '../services/api';
 import jwdDecode from 'jwt-decode';
+
+import api from '../services/api';
+
+import AuthContext from '../contexts/Auth';
+
 import useModals from './useModals';
 import useLoading from './useLoading';
 
@@ -13,55 +16,52 @@ export default function useAuth() {
 
   useEffect(() => {
     if (user) {
-      if (user.logedIn) {
-        localStorage.setItem('username', user.username);
-        localStorage.setItem('firstName', user.firstName);
-        localStorage.setItem('lastName', user.lastName);
-      } else {
-        localStorage.removeItem('username');
-        localStorage.removeItem('firstName');
-        localStorage.removeItem('lastName');
-      }
+      user.logedIn
+        ? localStorage.setItem('user', JSON.stringify(user))
+        : localStorage.removeItem('user');
     }
   }, [user]);
 
   const login = useCallback(
     async (username, password, onError) => {
-      if (username.length && password.length) {
-        toggleLoading('login', true);
-        const response = await api.post('/auth/login/', {
-          username,
-          password,
-        });
-        toggleLoading('login', false);
-        if (response && response.status === 200) {
-          const { access, refresh } = response.data;
-          const { username, firstName, lastName } = jwdDecode(access);
-
-          const user = {
-            username,
-            firstName,
-            lastName,
-            logedIn: true,
-          };
-
-          localStorage.setItem('accessToken', access);
-          localStorage.setItem('refreshToken', refresh);
-
-          setUser(user);
-          toggleModal('login');
-        } else {
-          onError({
-            credentials:
-              'Invalid credentials!\n\n Please check your username/password',
-          });
-        }
-      } else {
-        onError({
+      if (!username.length || !password.length) {
+        return onError({
           username: !username.length && 'An username is required!',
           password: !password.length && 'A password is required!',
         });
       }
+
+      toggleLoading('login', true);
+
+      const response = await api.post('/auth/login/', {
+        username,
+        password,
+      });
+
+      toggleLoading('login', false);
+
+      if (!response || !response.status === 200) {
+        return onError({
+          credentials: 'Invalid credentials! Please check your username and password',
+        });
+      }
+
+      const { access, refresh } = response.data;
+      const { username: name, firstName, lastName } = jwdDecode(access);
+
+      const user = {
+        username: name,
+        firstName,
+        lastName,
+        logedIn: true,
+      };
+
+      localStorage.setItem('accessToken', access);
+      localStorage.setItem('refreshToken', refresh);
+
+      setUser(user);
+      toggleModal('login', false);
+      onError({});
     },
     [setUser, toggleModal, toggleLoading],
   );
@@ -74,55 +74,43 @@ export default function useAuth() {
   }, [setUser]);
 
   const register = useCallback(
-    async (
-      username,
-      password,
-      password2,
-      email,
-      first_name,
-      last_name,
-      onError,
-    ) => {
-      if (
-        username &&
-        password &&
-        password2 &&
-        email &&
-        first_name &&
-        last_name
-      ) {
-        toggleLoading('register', true);
-        const response = await api.post('/auth/register/', {
-          username,
-          password,
-          password2,
-          email,
-          first_name,
-          last_name,
-        });
-        toggleLoading('register', false);
+    async (userData, onError) => {
+      const requiredFields = [
+        'username',
+        'password',
+        'password2',
+        'email',
+        'first_name',
+        'last_name',
+      ];
 
-        if (response && response.status === 201) {
-          toggleModal('register');
-          toggleModal('login');
-        } else {
-          onError({
-            password: password !== password2 && "Passwords didn't match",
-            username:
-              password === password2 && 'Username or email is probably in use',
-          });
-        }
-      } else {
-        onError({
-          username: !username.length && 'An username is required!',
-          password: !password.length && 'A password is required!',
-          password2:
-            !password2.length && 'A password confirmation is required!',
-          email: !email.length && 'An email is required!',
-          firstName: !first_name.length && 'A first name is required!',
-          lastName: !last_name.length && 'A last name is required!',
+      if (requiredFields.some((requiredField) => !userData[requiredField])) {
+        return onError({
+          username: !userData.username.length && 'An username is required!',
+          password: !userData.password.length && 'A password is required!',
+          password2: !userData.password2.length && 'A password confirmation is required!',
+          email: !userData.email.length && 'An email is required!',
+          firstName: !userData.first_name.length && 'A first name is required!',
+          lastName: !userData.last_name.length && 'A last name is required!',
         });
       }
+
+      toggleLoading('register', true);
+
+      const response = await api.post('/auth/register/', userData);
+
+      toggleLoading('register', false);
+
+      if (!response || !response.status === 201) {
+        return onError({
+          password: userData.password !== userData.password2 && "Passwords didn't match",
+          username: userData.password === userData.password2 && 'Username/email is probably in use',
+        });
+      }
+
+      toggleModal('register', false);
+      toggleModal('login', true);
+      onError({});
     },
     [toggleModal, toggleLoading],
   );

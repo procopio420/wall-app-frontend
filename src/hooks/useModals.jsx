@@ -13,23 +13,15 @@ export default function useModals() {
   } = useContext(ModalsContext);
 
   const toggleModal = useCallback(
-    (modal) => {
+    (modal, isOpen) => {
       const choices = {
-        login: () => setLoginOpen(!loginIsOpen),
-        register: () => setRegisterOpen(!registerIsOpen),
-        createPost: () => setCreatePostIsOpen(!createPostIsOpen),
+        login: () => setLoginOpen(isOpen),
+        register: () => setRegisterOpen(isOpen),
+        createPost: () => setCreatePostIsOpen(isOpen),
       };
-
-      choices[modal]();
+      return choices[modal]();
     },
-    [
-      loginIsOpen,
-      setLoginOpen,
-      registerIsOpen,
-      setRegisterOpen,
-      createPostIsOpen,
-      setCreatePostIsOpen,
-    ],
+    [setLoginOpen, setRegisterOpen, setCreatePostIsOpen],
   );
 
   return {

@@ -8,20 +8,9 @@ export const AuthProvider = ({ children }) => {
   const [registerIsOpen, setRegisterOpen] = useState(false);
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    const firstName = localStorage.getItem('firstName');
-    const lastName = localStorage.getItem('lastName');
+    const user = localStorage.getItem('user');
 
-    if (username && firstName && lastName) {
-      setUser({
-        username,
-        firstName,
-        lastName,
-        logedIn: true,
-      });
-    } else {
-      setUser({ logedIn: false });
-    }
+    user ? setUser(JSON.parse(user)) : setUser({ logedIn: false });
   }, []);
 
   const contextValue = {
@@ -33,9 +22,7 @@ export const AuthProvider = ({ children }) => {
     setRegisterOpen,
   };
 
-  return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;

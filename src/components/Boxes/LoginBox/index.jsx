@@ -21,16 +21,14 @@ export default function LoginBox() {
   return (
     <BaseBox
       title="Login"
-      toggle={() => toggleModal('login')}
-      buttonAction={() =>
-        login(username, password, (errors) => setErrors(errors))
-      }
+      toggle={() => toggleModal('login', false)}
+      buttonAction={() => login(username, password, (errors) => setErrors(errors))}
       buttonText="Login"
       isOpen={loginIsOpen}
       footer={{
         action: () => {
-          toggleModal('login');
-          toggleModal('register');
+          toggleModal('login', false);
+          toggleModal('register', true);
         },
         link: 'click here to register!',
         text: 'Or ',
@@ -40,9 +38,7 @@ export default function LoginBox() {
         <Loading size={100} />
       ) : (
         <>
-          <div>
-            {!!errors.credentials && <Error>{errors.credentials}</Error>}
-          </div>
+          <div>{!!errors.credentials && <Error>{errors.credentials}</Error>}</div>
           <div>{!!errors.username && <Error>{errors.username}</Error>}</div>
           <Field
             value={username}

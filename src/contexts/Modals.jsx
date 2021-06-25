@@ -13,12 +13,10 @@ export const ModalsProvider = ({ children }) => {
     registerIsOpen,
     setRegisterOpen,
     createPostIsOpen,
-    setCreatePostIsOpen
+    setCreatePostIsOpen,
   };
 
-  return (
-    <ModalsContext.Provider value={contextValue}>{children}</ModalsContext.Provider>
-  );
+  return <ModalsContext.Provider value={contextValue}>{children}</ModalsContext.Provider>;
 };
 
 export default ModalsContext;

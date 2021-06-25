@@ -25,15 +25,10 @@ export default function RegisterBox() {
   return (
     <BaseBox
       title="Register"
-      toggle={() => toggleModal('register')}
+      toggle={() => toggleModal('register', false)}
       buttonAction={() =>
         register(
-          username,
-          password,
-          password2,
-          email,
-          firstName,
-          lastName,
+          { username, password, password2, email, first_name: firstName, last_name: lastName },
           (errors) => setErrors(errors),
         )
       }
@@ -41,8 +36,8 @@ export default function RegisterBox() {
       isOpen={registerIsOpen}
       footer={{
         action: () => {
-          toggleModal('login');
-          toggleModal('register');
+          toggleModal('register', false);
+          toggleModal('login', true);
         },
         link: 'Click here to login!',
         text: 'Already have an account? ',

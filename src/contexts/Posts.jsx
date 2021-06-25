@@ -24,11 +24,7 @@ export const PostsProvider = ({ children }) => {
     setPosts,
   };
 
-  return (
-    <PostsContext.Provider value={contextValue}>
-      {children}
-    </PostsContext.Provider>
-  );
+  return <PostsContext.Provider value={contextValue}>{children}</PostsContext.Provider>;
 };
 
 export default PostsContext;
