@@ -2,15 +2,19 @@ import { useCallback, useContext } from 'react';
 import PostsContext from '../contexts/Posts';
 import api from '../services/api';
 import useModals from './useModals';
+import useLoading from './useLoading';
 
 export default function usePosts() {
   const { posts, setPosts } = useContext(PostsContext);
   const { toggleModal } = useModals();
+  const { toggleLoading } = useLoading();
 
   const createPost = useCallback(
     async (title, body, onError) => {
       if (title.length && body.length) {
+        toggleLoading('createPost', true);
         const response = await api.post('/wall/', { title, body });
+        toggleLoading('createPost', false);
 
         if (response && response.status === 201) {
           const newPost = response && response.data;
@@ -27,7 +31,7 @@ export default function usePosts() {
         });
       }
     },
-    [posts, setPosts, toggleModal],
+    [posts, setPosts, toggleModal, toggleLoading],
   );
 
   const removePost = useCallback(

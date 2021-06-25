@@ -3,8 +3,14 @@ import { useCallback, useContext } from 'react';
 import ModalsContext from '../contexts/Modals';
 
 export default function useModals() {
-  const { loginIsOpen, setLoginOpen, registerIsOpen, setRegisterOpen, createPostIsOpen, setCreatePostIsOpen } =
-    useContext(ModalsContext);
+  const {
+    loginIsOpen,
+    setLoginOpen,
+    registerIsOpen,
+    setRegisterOpen,
+    createPostIsOpen,
+    setCreatePostIsOpen,
+  } = useContext(ModalsContext);
 
   const toggleModal = useCallback(
     (modal) => {

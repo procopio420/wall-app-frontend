@@ -15,12 +15,12 @@ yarn # or npm i
 ## Usage
 
 ```bash
-yarn start
+yarn start # or npm start
 ```
 
 ## To Do
 
-- [ ] Tests
-- [ ] Loading spinners
+- [x] Loading spinners
 - [x] User inputs validations/feedbacks
+- [ ] Tests
 - [ ] Mobile responsive (header and boxes)

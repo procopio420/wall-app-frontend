@@ -3,11 +3,13 @@ import AuthContext from '../contexts/Auth';
 import api from '../services/api';
 import jwdDecode from 'jwt-decode';
 import useModals from './useModals';
+import useLoading from './useLoading';
 
 export default function useAuth() {
   const { user, setUser } = useContext(AuthContext);
 
   const { toggleModal } = useModals();
+  const { toggleLoading } = useLoading();
 
   useEffect(() => {
     if (user) {
@@ -26,11 +28,12 @@ export default function useAuth() {
   const login = useCallback(
     async (username, password, onError) => {
       if (username.length && password.length) {
+        toggleLoading('login', true);
         const response = await api.post('/auth/login/', {
           username,
           password,
         });
-
+        toggleLoading('login', false);
         if (response && response.status === 200) {
           const { access, refresh } = response.data;
           const { username, firstName, lastName } = jwdDecode(access);
@@ -60,7 +63,7 @@ export default function useAuth() {
         });
       }
     },
-    [setUser, toggleModal],
+    [setUser, toggleModal, toggleLoading],
   );
 
   const logout = useCallback(() => {
@@ -88,6 +91,7 @@ export default function useAuth() {
         first_name &&
         last_name
       ) {
+        toggleLoading('register', true);
         const response = await api.post('/auth/register/', {
           username,
           password,
@@ -96,6 +100,7 @@ export default function useAuth() {
           first_name,
           last_name,
         });
+        toggleLoading('register', false);
 
         if (response && response.status === 201) {
           toggleModal('register');
@@ -103,7 +108,8 @@ export default function useAuth() {
         } else {
           onError({
             password: password !== password2 && "Passwords didn't match",
-            username: password === password2 && 'Username is probably in use',
+            username:
+              password === password2 && 'Username or email is probably in use',
           });
         }
       } else {
